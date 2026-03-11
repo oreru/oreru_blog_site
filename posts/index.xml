@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Posts on TeXify3</title>
-    <link>https://texify3.michaelneuper.com/posts/</link>
+    <link>https://oreru.github.io/oreru_blog_site/posts/</link>
     <description>Recent content in Posts on TeXify3</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 11 Mar 2026 12:26:48 +0800</lastBuildDate><atom:link href="https://texify3.michaelneuper.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 11 Mar 2026 12:26:48 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Test</title>
-      <link>https://texify3.michaelneuper.com/posts/test/</link>
+      <link>https://oreru.github.io/oreru_blog_site/posts/test/</link>
       <pubDate>Wed, 11 Mar 2026 12:26:48 +0800</pubDate>
       
-      <guid>https://texify3.michaelneuper.com/posts/test/</guid>
+      <guid>https://oreru.github.io/oreru_blog_site/posts/test/</guid>
       <description>&lt;h3 id=&#34;创建event&#34;&gt;创建event&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;用于wwise捕捉输入的游戏调用&lt;/li&gt;
