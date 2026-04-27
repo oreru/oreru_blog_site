@@ -5,6 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <script>
+    (function () {
+      try {
+        var darkMode = localStorage.getItem("darkMode");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (darkMode === "enabled" || (darkMode === null && prefersDark)) {
+          document.documentElement.classList.add("darkmode");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   
   
   <meta name="author" content="Michael Neuper">
@@ -24,6 +36,11 @@ GitHub: https://github.com/oreru
 
 Summary
 Write a short summary about your background, strengths, and the type of work you are looking for.
+Video (Test)
+
+  
+
+Original link: https://www.bilibili.com/video/BV11LDXBSExe/
 Skills
 
 Audio Middleware: Wwise, FMOD
@@ -134,6 +151,7 @@ GitHub: https://github.com/oreru
   <meta property="og:title" content="Resume">
   <meta property="og:description" content="Personal Resume This page is used to present my personal resume.
 Profile Name: Oreru Role: Game Audio / Technical Audio Location: Email: GitHub: https://github.com/oreru Summary Write a short summary about your background, strengths, and the type of work you are looking for.
+Video (Test) Original link: https://www.bilibili.com/video/BV11LDXBSExe/
 Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programming: C#, C&#43;&#43;, Python Tools: Git, VS Code Experience Company / Project A Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Company / Project B Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Education School / Major, YYYY - YYYY Selected Projects Project Name 1 Description: one-line project intro. Tech Stack: Unity, Wwise, C# Highlights: Highlight 1 Highlight 2 Project Name 2 Description: one-line project intro. Tech Stack: Unreal, FMOD, C&#43;&#43; Highlights: Highlight 1 Highlight 2 Awards and Certifications Certification / Award, YYYY Contact GitHub: https://github.com/oreru">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
@@ -150,15 +168,16 @@ Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programmi
   <meta itemprop="name" content="Resume">
   <meta itemprop="description" content="Personal Resume This page is used to present my personal resume.
 Profile Name: Oreru Role: Game Audio / Technical Audio Location: Email: GitHub: https://github.com/oreru Summary Write a short summary about your background, strengths, and the type of work you are looking for.
+Video (Test) Original link: https://www.bilibili.com/video/BV11LDXBSExe/
 Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programming: C#, C&#43;&#43;, Python Tools: Git, VS Code Experience Company / Project A Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Company / Project B Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Education School / Major, YYYY - YYYY Selected Projects Project Name 1 Description: one-line project intro. Tech Stack: Unity, Wwise, C# Highlights: Highlight 1 Highlight 2 Project Name 2 Description: one-line project intro. Tech Stack: Unreal, FMOD, C&#43;&#43; Highlights: Highlight 1 Highlight 2 Awards and Certifications Certification / Award, YYYY Contact GitHub: https://github.com/oreru">
   <meta itemprop="datePublished" content="2026-04-23T00:00:00+08:00">
   <meta itemprop="dateModified" content="2026-04-23T00:00:00+08:00">
-  <meta itemprop="wordCount" content="142">
+  <meta itemprop="wordCount" content="147">
 
   
   
   
-    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.51cbd0fcb2b1b6ec235888625e223e52751d6d25cb2ef18d5f07fb5841923228.css" integrity="sha256-UcvQ/LKxtuwjWIhiXiI&#43;UnUdbSXLLvGNXwf7WEGSMig=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.c0adedf182bf1bc9b73c52a0d692b555818bb702a41d4918125723f13fcc9f3e.css" integrity="sha256-wK3t8YK/G8m3PFKg1pK1VYGLtwKkHUkYElcj8T/Mnz4=" crossorigin="anonymous">
   
 
   
@@ -177,6 +196,7 @@ Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programmi
   <meta name="twitter:title" content="Resume">
   <meta name="twitter:description" content="Personal Resume This page is used to present my personal resume.
 Profile Name: Oreru Role: Game Audio / Technical Audio Location: Email: GitHub: https://github.com/oreru Summary Write a short summary about your background, strengths, and the type of work you are looking for.
+Video (Test) Original link: https://www.bilibili.com/video/BV11LDXBSExe/
 Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programming: C#, C&#43;&#43;, Python Tools: Git, VS Code Experience Company / Project A Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Company / Project B Period: YYYY.MM - YYYY.MM Responsibility 1 Responsibility 2 Achievement 1 Education School / Major, YYYY - YYYY Selected Projects Project Name 1 Description: one-line project intro. Tech Stack: Unity, Wwise, C# Highlights: Highlight 1 Highlight 2 Project Name 2 Description: one-line project intro. Tech Stack: Unreal, FMOD, C&#43;&#43; Highlights: Highlight 1 Highlight 2 Awards and Certifications Certification / Award, YYYY Contact GitHub: https://github.com/oreru">
 
 
@@ -220,6 +240,11 @@ Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programmi
     
     <span class="nav-bar-item">
       
+      <a class="link" href="https://oreru.github.io/oreru_blog_site/portfolio/">Portfolio</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
       <a class="link" href="https://github.com/oreru">GitHub</a>
     </span>
     
@@ -242,6 +267,18 @@ Skills Audio Middleware: Wwise, FMOD Game Engine: Unity, Unreal Engine Programmi
 </ul>
 <h2 id="summary">Summary</h2>
 <p>Write a short summary about your background, strengths, and the type of work you are looking for.</p>
+<h2 id="video-test">Video (Test)</h2>
+<div style="position: relative; width: 100%; padding-top: 56.25%; margin: 1rem 0;">
+  <iframe
+    src="https://player.bilibili.com/player.html?bvid=BV11LDXBSExe&page=1&high_quality=1&autoplay=1&danmaku=0"
+    scrolling="no"
+    frameborder="0"
+    allow="autoplay; fullscreen; picture-in-picture"
+    allowfullscreen="true"
+    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"
+  ></iframe>
+</div>
+<p>Original link: <a href="https://www.bilibili.com/video/BV11LDXBSExe/">https://www.bilibili.com/video/BV11LDXBSExe/</a></p>
 <h2 id="skills">Skills</h2>
 <ul>
 <li>Audio Middleware: Wwise, FMOD</li>

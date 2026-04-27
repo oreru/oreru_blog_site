@@ -47,11 +47,13 @@ let darkMode = localStorage.getItem("darkMode");
 const darkModeToggle = document.querySelectorAll("#dark-mode-toggle");
 
 const enableDarkMode = () => {
+  document.documentElement.classList.add("darkmode");
   document.body.classList.add("darkmode");
   localStorage.setItem("darkMode", "enabled");
 };
 
 const disableDarkMode = () => {
+  document.documentElement.classList.remove("darkmode");
   document.body.classList.remove("darkmode");
   localStorage.setItem("darkMode", "disabled");
 };

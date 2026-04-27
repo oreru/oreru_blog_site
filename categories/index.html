@@ -5,6 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+  <script>
+    (function () {
+      try {
+        var darkMode = localStorage.getItem("darkMode");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (darkMode === "enabled" || (darkMode === null && prefersDark)) {
+          document.documentElement.classList.add("darkmode");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
   
   
   <meta name="author" content="Michael Neuper">
@@ -85,7 +97,7 @@
   
   
   
-    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.51cbd0fcb2b1b6ec235888625e223e52751d6d25cb2ef18d5f07fb5841923228.css" integrity="sha256-UcvQ/LKxtuwjWIhiXiI&#43;UnUdbSXLLvGNXwf7WEGSMig=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.c0adedf182bf1bc9b73c52a0d692b555818bb702a41d4918125723f13fcc9f3e.css" integrity="sha256-wK3t8YK/G8m3PFKg1pK1VYGLtwKkHUkYElcj8T/Mnz4=" crossorigin="anonymous">
   
 
   
@@ -133,6 +145,11 @@
     <span class="nav-bar-item">
       
       <a class="link" href="https://oreru.github.io/oreru_blog_site/resume/">Resume</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+      <a class="link" href="https://oreru.github.io/oreru_blog_site/portfolio/">Portfolio</a>
     </span>
     
     <span class="nav-bar-item">

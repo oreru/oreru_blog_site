@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Portfolio on Oreru&#39;s Blog</title>
+    <link>https://oreru.github.io/oreru_blog_site/tags/portfolio/</link>
+    <description>Recent content in Portfolio on Oreru&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Mon, 27 Apr 2026 10:20:00 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/tags/portfolio/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>
