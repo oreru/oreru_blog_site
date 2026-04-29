@@ -73,9 +73,9 @@
   
 
   
-  <meta property="og:url" content="https://oreru.github.io/oreru_blog_site/posts/test/">
+  <meta property="og:url" content="https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
   <meta property="og:site_name" content="Oreru&#39;s Blog">
-  <meta property="og:title" content="Test">
+  <meta property="og:title" content="Wwise101学习笔记">
   <meta property="og:description" content="Generic description">
   <meta property="og:locale" content="en">
   <meta property="og:type" content="article">
@@ -84,26 +84,26 @@
     <meta property="article:modified_time" content="2026-03-11T12:26:48+08:00">
     <meta property="article:tag" content="Daily Learning">
     <meta property="article:tag" content="Wwise">
-    <meta property="article:tag" content="Unity">
+    <meta property="article:tag" content="Game Audio">
 
 
   
-  <link rel="canonical" href="https://oreru.github.io/oreru_blog_site/posts/test/">
+  <link rel="canonical" href="https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/">
 
   
   
   
-  <meta itemprop="name" content="Test">
+  <meta itemprop="name" content="Wwise101学习笔记">
   <meta itemprop="description" content="Generic description">
   <meta itemprop="datePublished" content="2026-03-11T12:26:48+08:00">
   <meta itemprop="dateModified" content="2026-03-11T12:26:48+08:00">
-  <meta itemprop="wordCount" content="4191">
-  <meta itemprop="keywords" content="Daily Learning,Wwise,Unity">
+  <meta itemprop="wordCount" content="4198">
+  <meta itemprop="keywords" content="Daily Learning,Wwise,Game Audio">
 
   
   
   
-    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.c0adedf182bf1bc9b73c52a0d692b555818bb702a41d4918125723f13fcc9f3e.css" integrity="sha256-wK3t8YK/G8m3PFKg1pK1VYGLtwKkHUkYElcj8T/Mnz4=" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.915a484a298a8e13886ec226bcb5873af265499008bb2fb419c6b6f5b0ac7347.css" integrity="sha256-kVpISimKjhOIbsImvLWHOvJlSZAIuy&#43;0Gca29bCsc0c=" crossorigin="anonymous">
   
 
   
@@ -113,13 +113,13 @@
 
   
   
-  <title>Test - Oreru&#39;s Blog</title>
+  <title>Wwise101学习笔记 - Oreru&#39;s Blog</title>
   
 
   
   
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Test">
+  <meta name="twitter:title" content="Wwise101学习笔记">
   <meta name="twitter:description" content="Generic description">
 
 
@@ -178,7 +178,7 @@
 <main id="main" class="post">
   
   <div class="post-heading">
-    <h1 class="post-title">Test</h1>
+    <h1 class="post-title">Wwise101学习笔记</h1>
     <div class="publish-metadata">
       
       <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -192,7 +192,7 @@
           <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
-          4191 words
+          4198 words
         </span>
       
       
@@ -218,7 +218,7 @@
     
     <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/wwise'>#Wwise</a>
     
-    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/unity'>#Unity</a>
+    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/game-audio'>#Game Audio</a>
     
     <br></br>
   </div>
@@ -237,7 +237,7 @@
         <h2 class="toc-title">Table of Contents</h2>
         <div class="toc numbered-subtitles"><nav id="TableOfContents">
   <ul>
-    <li>
+    <li><a href="#发出第一个声音">发出第一个声音</a>
       <ul>
         <li><a href="#创建event">创建event</a></li>
         <li><a href="#导入声音">导入声音</a></li>
@@ -284,7 +284,8 @@
 
     <article class="content numbered-subtitles">
       
-      <h3 id="创建event">创建event</h3>
+      <h2 id="发出第一个声音">发出第一个声音</h2>
+<h3 id="创建event">创建event</h3>
 <ul>
 <li>用于wwise捕捉输入的游戏调用</li>
 <li>layout</li>
@@ -551,7 +552,7 @@
     <a></a>
     
     
-    <a></a>
+    <a class="link" href="https://oreru.github.io/oreru_blog_site/posts/easyreverb/" title="用 JUCE 构建一个 Reverb 效果器">next →</a>
     
   </div>
   <div class="comment">

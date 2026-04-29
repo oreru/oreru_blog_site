@@ -3,45 +3,69 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
     <loc>https://oreru.github.io/oreru_blog_site/</loc>
-    <lastmod>2026-04-27T10:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/portfolio/interactive-audio-demo-b/</loc>
-    <lastmod>2026-04-27T10:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/tags/portfolio/</loc>
-    <lastmod>2026-04-27T10:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/tags/</loc>
-    <lastmod>2026-04-27T10:20:00+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/portfolio/interactive-audio-demo-a/</loc>
-    <lastmod>2026-04-27T10:10:00+08:00</lastmod>
+    <lastmod>2026-04-27T10:00:00+08:00</lastmod>
   </url><url>
     <loc>https://oreru.github.io/oreru_blog_site/portfolio/</loc>
     <lastmod>2026-04-27T10:00:00+08:00</lastmod>
   </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/categories/audio/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/categories/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/dsp/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/juce/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/portfolio/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/reverb/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/ue-_wwise_%E9%9B%86%E6%88%90/</loc>
+    <lastmod>2026-04-26T10:18:00+08:00</lastmod>
+  </url><url>
     <loc>https://oreru.github.io/oreru_blog_site/resume/</loc>
     <lastmod>2026-04-23T00:00:00+08:00</lastmod>
   </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/categories/</loc>
-    <lastmod>2026-03-11T12:26:48+08:00</lastmod>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/sound_redesign/</loc>
+    <lastmod>2026-04-14T10:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/sound-redesign/</loc>
+    <lastmod>2026-04-14T10:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/reascript/</loc>
+    <lastmod>2026-03-27T10:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/</loc>
+    <lastmod>2026-03-27T10:10:00+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/easyreverb/</loc>
+    <lastmod>2026-03-15T10:18:00+08:00</lastmod>
   </url><url>
     <loc>https://oreru.github.io/oreru_blog_site/tags/daily-learning/</loc>
     <lastmod>2026-03-11T12:26:48+08:00</lastmod>
   </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/posts/</loc>
-    <lastmod>2026-03-11T12:26:48+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/posts/test/</loc>
-    <lastmod>2026-03-11T12:26:48+08:00</lastmod>
-  </url><url>
-    <loc>https://oreru.github.io/oreru_blog_site/tags/unity/</loc>
+    <loc>https://oreru.github.io/oreru_blog_site/tags/game-audio/</loc>
     <lastmod>2026-03-11T12:26:48+08:00</lastmod>
   </url><url>
     <loc>https://oreru.github.io/oreru_blog_site/categories/wwise/</loc>
     <lastmod>2026-03-11T12:26:48+08:00</lastmod>
   </url><url>
     <loc>https://oreru.github.io/oreru_blog_site/tags/wwise/</loc>
+    <lastmod>2026-03-11T12:26:48+08:00</lastmod>
+  </url><url>
+    <loc>https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
     <lastmod>2026-03-11T12:26:48+08:00</lastmod>
   </url>
 </urlset>

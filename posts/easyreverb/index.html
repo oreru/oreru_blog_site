@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en" style="font-size: 100%">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <script>
+    (function () {
+      try {
+        var darkMode = localStorage.getItem("darkMode");
+        var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        if (darkMode === "enabled" || (darkMode === null && prefersDark)) {
+          document.documentElement.classList.add("darkmode");
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  
+  
+  <meta name="author" content="Michael Neuper">
+  
+
+  
+  
+  <meta name="description" content="一个算法混响在JUCE里的复现">
+  
+
+  
+  <link rel="apple-touch-icon" sizes="180x180" href="https://oreru.github.io/oreru_blog_site//images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://oreru.github.io/oreru_blog_site//images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://oreru.github.io/oreru_blog_site//images/favicon-16x16.png">
+
+  
+  
+  <meta name="keywords" content='hugo latex theme blog texify texify2 texify3 michael neuper'>
+  
+
+  
+  
+  <link rel="stylesheet" href='https://oreru.github.io/oreru_blog_site/katex/katex.min.css'>
+<script defer defer src='https://oreru.github.io/oreru_blog_site/katex/katex.min.js'></script>
+<script defer src='https://oreru.github.io/oreru_blog_site/katex/contrib/auto-render.min.js'></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        renderMathInElement(document.body, {
+          delimiters: [
+              {left: '$$', right: '$$', display: true},
+              {left: '$', right: '$', display: false},
+              {left: '\\(', right: '\\)', display: false},
+              {left: '\\[', right: '\\]', display: true}
+          ],
+          throwOnError : false
+        });
+    });
+</script>
+  
+
+  
+    <script async data-name="BMC-Widget" 
+        data-cfasync="true" 
+        src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" 
+        data-id="michaelneuper" 
+        data-description="Like what I do? Buy me a coffee!" 
+        data-message="" 
+        data-color="#d79921" 
+        data-position="Right" 
+        data-x_margin="18" 
+        data-y_margin="18"
+        crossorigin="anonymous">
+  </script>
+  
+
+  
+  <meta property="og:url" content="https://oreru.github.io/oreru_blog_site/posts/easyreverb/">
+  <meta property="og:site_name" content="Oreru&#39;s Blog">
+  <meta property="og:title" content="用 JUCE 构建一个 Reverb 效果器">
+  <meta property="og:description" content="一个算法混响在JUCE里的复现">
+  <meta property="og:locale" content="en">
+  <meta property="og:type" content="article">
+    <meta property="article:section" content="posts">
+    <meta property="article:published_time" content="2026-03-15T10:18:00+08:00">
+    <meta property="article:modified_time" content="2026-03-15T10:18:00+08:00">
+    <meta property="article:tag" content="Portfolio">
+    <meta property="article:tag" content="JUCE">
+    <meta property="article:tag" content="DSP">
+    <meta property="article:tag" content="Reverb">
+
+
+  
+  <link rel="canonical" href="https://oreru.github.io/oreru_blog_site/posts/easyreverb/">
+
+  
+  
+  
+  <meta itemprop="name" content="用 JUCE 构建一个 Reverb 效果器">
+  <meta itemprop="description" content="一个算法混响在JUCE里的复现">
+  <meta itemprop="datePublished" content="2026-03-15T10:18:00+08:00">
+  <meta itemprop="dateModified" content="2026-03-15T10:18:00+08:00">
+  <meta itemprop="wordCount" content="2451">
+  <meta itemprop="keywords" content="Portfolio,JUCE,DSP,Reverb">
+
+  
+  
+  
+    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/common.min.915a484a298a8e13886ec226bcb5873af265499008bb2fb419c6b6f5b0ac7347.css" integrity="sha256-kVpISimKjhOIbsImvLWHOvJlSZAIuy&#43;0Gca29bCsc0c=" crossorigin="anonymous">
+  
+
+  
+  
+    <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/content.min.e9f903a2a0842c72b218b7248895d4083256c3068ae9fd857079bc44e0aa1524.css" integrity="sha256-6fkDoqCELHKyGLckiJXUCDJWwwaK6f2FcHm8ROCqFSQ=" crossorigin="anonymous">
+  
+
+  
+  
+  <title>用 JUCE 构建一个 Reverb 效果器 - Oreru&#39;s Blog</title>
+  
+
+  
+  
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="用 JUCE 构建一个 Reverb 效果器">
+  <meta name="twitter:description" content="一个算法混响在JUCE里的复现">
+
+
+  
+
+
+  <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/single.min.4dbf19f48f84d0b894e8f8a3e6f3d0dafa610be44561fd8ae603040f719db38f.css" integrity="sha256-Tb8Z9I&#43;E0LiU6Pij5vPQ2vphC&#43;RFYf2K5gMED3Gds48=" crossorigin="anonymous">
+
+
+  <link rel="stylesheet" href="https://oreru.github.io/oreru_blog_site/css/single.min.78a121b7d7a160420f9daab0ea13add66c37b9c44f27bba07b27207e2b0975d2.css" integrity="sha256-eKEht9ehYEIPnaqw6hOt1mw3ucRPJ7ugeycgfisJddI=" crossorigin="anonymous">
+
+
+</head>
+
+<body>
+  <div id="wrapper">
+    
+
+
+<header id="header">
+  <h1>
+    <a href="https://oreru.github.io/oreru_blog_site/">Oreru&#39;s Blog</a>
+    <button id="dark-mode-toggle" class="dark-mode-toggle" aria-label="Toggle theme">
+        <svg width="2rem" height="2rem" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 496">
+        <path fill="currentColor" d="M8,256C8,393,119,504,256,504S504,393,504,256,393,8,256,8,8,119,8,256ZM256,440V72a184,184,0,0,1,0,368Z" transform="translate(-8 -8)"/>
+        </svg>
+    </button>
+  </h1>
+
+  <nav>
+    
+    <span class="nav-bar-item">
+      
+      <a class="link" href="https://oreru.github.io/oreru_blog_site/posts/">Blog</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+      <a class="link" href="https://oreru.github.io/oreru_blog_site/resume/">Resume</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+      <a class="link" href="https://oreru.github.io/oreru_blog_site/portfolio/">Portfolio</a>
+    </span>
+    
+    <span class="nav-bar-item">
+      
+      <a class="link" href="https://github.com/oreru">GitHub</a>
+    </span>
+    
+  </nav>
+</header>
+<hr class="head-rule"></hr>
+    
+<main id="main" class="post">
+  
+  <div class="post-heading">
+    <h1 class="post-title">用 JUCE 构建一个 Reverb 效果器</h1>
+    <div class="publish-metadata">
+      
+      <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M3 9H21M7 3V5M17 3V5M6 13H8M6 17H8M11 13H13M11 17H13M16 13H18M16 17H18M6.2 21H17.8C18.9201 21 19.4802 21 19.908 20.782C20.2843 20.5903 20.5903 20.2843 20.782 19.908C21 19.4802 21 18.9201 21 17.8V8.2C21 7.07989 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V17.8C3 18.9201 3 19.4802 3.21799 19.908C3.40973 20.2843 3.71569 20.5903 4.09202 20.782C4.51984 21 5.07989 21 6.2 21Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      15 March 2026
+      
+      
+        &nbsp;
+        <span>
+          <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M15.4998 5.49994L18.3282 8.32837M3 20.9997L3.04745 20.6675C3.21536 19.4922 3.29932 18.9045 3.49029 18.3558C3.65975 17.8689 3.89124 17.4059 4.17906 16.9783C4.50341 16.4963 4.92319 16.0765 5.76274 15.237L17.4107 3.58896C18.1918 2.80791 19.4581 2.80791 20.2392 3.58896C21.0202 4.37001 21.0202 5.63634 20.2392 6.41739L8.37744 18.2791C7.61579 19.0408 7.23497 19.4216 6.8012 19.7244C6.41618 19.9932 6.00093 20.2159 5.56398 20.3879C5.07171 20.5817 4.54375 20.6882 3.48793 20.9012L3 20.9997Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          2451 words
+        </span>
+      
+      
+      
+        
+      
+      
+        &nbsp;
+        <span>
+          <svg width="0.75em" height="0.75em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 7V12L14.5 13.5M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C16.9706 3 21 7.02944 21 12Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          ~5 mins
+        </span>
+      
+    </div>
+  </div>
+
+  
+  <div>
+    
+    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/portfolio'>#Portfolio</a>
+    
+    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/juce'>#JUCE</a>
+    
+    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/dsp'>#DSP</a>
+    
+    <a class="link tag" href='https://oreru.github.io/oreru_blog_site/tags/reverb'>#Reverb</a>
+    
+    <br></br>
+  </div>
+  
+  
+  
+    
+      
+    
+  
+
+  <div class="post-layout has-toc">
+    
+    <aside class="toc-sidebar" aria-label="Table of Contents">
+      <div class="toc-sidebar-inner">
+        <h2 class="toc-title">Table of Contents</h2>
+        <div class="toc numbered-subtitles"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#混响-dsp-的实现">混响 DSP 的实现</a>
+      <ul>
+        <li><a href="#feedback-delay-loop">Feedback Delay Loop</a></li>
+      </ul>
+    </li>
+    <li><a href="#算法实现">算法实现</a>
+      <ul>
+        <li><a href="#diffusion-step">Diffusion Step</a></li>
+        <li><a href="#feedback-loop">Feedback Loop</a></li>
+      </ul>
+    </li>
+    <li><a href="#参数的设置和绑定">参数的设置和绑定</a>
+      <ul>
+        <li><a href="#juce-中参数的信号链">JUCE 中参数的信号链</a></li>
+        <li><a href="#pluginprocessorh声明参数">PluginProcessor.h：声明参数</a></li>
+        <li><a href="#pluginprocessorcpp参数创建使用保存">PluginProcessor.cpp：参数创建、使用、保存</a></li>
+        <li><a href="#plugineditorhcpp参数可视化与交互">PluginEditor.h/.cpp：参数可视化与交互</a></li>
+      </ul>
+    </li>
+    <li><a href="#小结">小结</a></li>
+  </ul>
+</nav></div>
+      </div>
+    </aside>
+    
+
+    <article class="content numbered-subtitles">
+      
+      <p><strong>作为之后会做的 Convolution Reverb 的前置准备和调研。</strong></p>
+<p>项目地址:https://github.com/oreru/EasyEffect</p>
+<p>首先在 Visual Studio 中部署好 Wolfsound 提供的 JUCE 插件模板。</p>
+<h2 id="混响-dsp-的实现">混响 DSP 的实现</h2>
+<h3 id="feedback-delay-loop">Feedback Delay Loop</h3>
+<img src="https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/M9cg/510X163/Pasted_image_20260326101807.png" alt="Feedback delay loop diagram" style="max-width: 720px; width: 80%; height: auto;" loading="lazy" />
+<p>在现实中，一个声音在房间中反复反弹扩散形成的回声和梳状滤波，这是我们辨别混响重要的特征，这幅图就体现了一种简易的回声发声器。</p>
+<p>信号进入系统之后，先通过 delay 进行时间上的延迟，一部分信号直接输出，另一部分则是进入一个衰减的乘法器中再通过延迟输出，这样每次延迟输出的信号能量都比前一次小。</p>
+<p>由此对单个信号我们有了这样一种让它在时间上进行扩散的结构，但是听起来更像是具有金属感的声音（梳状滤波），所以我们需要把上述结构拓展成多通道的。</p>
+<img src="https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/uKaR/880X278/Pasted_image_20260326103939.png" alt="Multi-channel feedback delay structure" style="max-width: 720px; width: 80%; height: auto;" loading="lazy" />
+<p>现在我们有 multi channel 的信号进入这个系统，同样还是经过 delay，但是这次对每个通道的 delay time 都不一样。每个通道的信号经过衰减之后进入一个混合矩阵，这个矩阵的作用是把每个通道的信号都分发给所有通道，比如 channel 1 的信号进入矩阵后，通道 1 的回声会被按比例分配给通道 1、2、3、4 的输入。</p>
+<p>为了保证这个矩阵不会无限发散所有信号，我们需要使用正交矩阵，保证前后的信号能量相一致。</p>
+<img src="https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/K7Qe/512X171/Pasted_image_20260326102430.png" alt="Orthogonal mixing matrix" style="max-width: 720px; width: 80%; height: auto;" loading="lazy" />
+<p>现在我们的系统在时间上已经能够不错的进行扩散和持续，但是听起来还是只是很多信号的衰减延迟，没有把声音打碎成粒子的云雾感。</p>
+<p>所以我们专门增加一步来先把信号进行扩散，再进入先前提到的 feedback loop 中。</p>
+<p>多通道的信号在经过不同时间的 delay 后，对某些通道的信号进行反相，来打破信号的相干性。这一步还可能交换不同通道的信号，增加信号的复杂度。最后经过一个正交矩阵，把所有通道的信号平均输出到四个通道中。</p>
+<img src="https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/K7Qe/512X171/Pasted_image_20260326102430.png" alt="Diffusion step overview" style="max-width: 720px; width: 80%; height: auto;" loading="lazy" />
+<p>最后我们把两个系统整合在一起，信号可能经过很多步的扩散，最后进入 feedback loop。</p>
+<hr>
+<h2 id="算法实现">算法实现</h2>
+<h3 id="diffusion-step">Diffusion Step</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> channels <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">DiffusionStep</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">using</span> Array <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span>, channels<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">double</span> delayMsRange <span style="color:#f92672">=</span> <span style="color:#ae81ff">20</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, channels<span style="color:#f92672">&gt;</span> delaySamples;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span>Delay, channels<span style="color:#f92672">&gt;</span> delays;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">bool</span>, channels<span style="color:#f92672">&gt;</span> flipPolarity;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span>(<span style="color:#66d9ef">double</span> sampleRate) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> delaySamplesRange <span style="color:#f92672">=</span> delayMsRange <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.001</span> <span style="color:#f92672">*</span> sampleRate;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">double</span> rangeLow <span style="color:#f92672">=</span> delaySamplesRange <span style="color:#f92672">*</span> c <span style="color:#f92672">/</span> channels;
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">double</span> rangeHigh <span style="color:#f92672">=</span> delaySamplesRange <span style="color:#f92672">*</span> (c <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>) <span style="color:#f92672">/</span> channels;
+</span></span><span style="display:flex;"><span>      delaySamples[c] <span style="color:#f92672">=</span> randomInRange(rangeLow, rangeHigh);
+</span></span><span style="display:flex;"><span>      delays[c].resize(delaySamples[c] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      delays[c].reset();
+</span></span><span style="display:flex;"><span>      flipPolarity[c] <span style="color:#f92672">=</span> rand() <span style="color:#f92672">%</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Array <span style="color:#a6e22e">process</span>(Array input) {
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Delay
+</span></span></span><span style="display:flex;"><span>    Array delayed;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      delays[c].write(input[c]);
+</span></span><span style="display:flex;"><span>      delayed[c] <span style="color:#f92672">=</span> delays[c].read(delaySamples[c]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Mix with a Hadamard matrix
+</span></span></span><span style="display:flex;"><span>    Array mixed <span style="color:#f92672">=</span> delayed;
+</span></span><span style="display:flex;"><span>    Hadamard<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span>, channels<span style="color:#f92672">&gt;::</span>inPlace(mixed.data());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Flip some polarities
+</span></span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">if</span> (flipPolarity[c])
+</span></span><span style="display:flex;"><span>        mixed[c] <span style="color:#f92672">*=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> mixed;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>DiffusionStep 的代码主要分为两个部分：configure 和 process，方便我们在 PluginProcessor 里面的 <code>PrepareToPlay()</code> 和 <code>ProcessBlock()</code> 里进行调用。</p>
+<p>代码中的 Delay 类主要使用了 <a href="https://signalsmith-audio.co.uk/">Signalsmith Audio</a> 的 DSP 库，大部分代码也是学习自这个 DSP 库作者在 ADC 上的演讲 <a href="https://www.youtube.com/watch?v=6ZK2Goiyotk&amp;t=1469s">Let&rsquo;s Write a Reverb - Geraint Luff - ADC21</a>，可以说是我看过最清晰的 DSP 小白向讲解了。</p>
+<p>在 <code>process()</code> 中我们可以清楚地看到之前所说的三个用于 diffusion 的步骤：delay、mix matrix 和 flip polarity。</p>
+<h3 id="feedback-loop">Feedback Loop</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span> channels <span style="color:#f92672">=</span> <span style="color:#ae81ff">8</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">struct</span> <span style="color:#a6e22e">MultiChannelMixedFeedback</span> {
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">using</span> Array <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span>, channels<span style="color:#f92672">&gt;</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">double</span> delayMs <span style="color:#f92672">=</span> <span style="color:#ae81ff">50</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">double</span> decayGain <span style="color:#f92672">=</span> <span style="color:#ae81ff">0.85</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span>, channels<span style="color:#f92672">&gt;</span> delaySamples;
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>array<span style="color:#f92672">&lt;</span>Delay, channels<span style="color:#f92672">&gt;</span> delays;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">configure</span>(<span style="color:#66d9ef">double</span> sampleRate) {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">double</span> delaySamplesBase <span style="color:#f92672">=</span> delayMs <span style="color:#f92672">*</span> <span style="color:#ae81ff">0.001</span> <span style="color:#f92672">*</span> sampleRate;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">double</span> r <span style="color:#f92672">=</span> c <span style="color:#f92672">*</span> <span style="color:#ae81ff">1.0</span> <span style="color:#f92672">/</span> channels;
+</span></span><span style="display:flex;"><span>      delaySamples[c] <span style="color:#f92672">=</span> std<span style="color:#f92672">::</span>pow(<span style="color:#ae81ff">2</span>, r) <span style="color:#f92672">*</span> delaySamplesBase;
+</span></span><span style="display:flex;"><span>      delays[c].resize(delaySamples[c] <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>      delays[c].reset();
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  Array <span style="color:#a6e22e">process</span>(Array input) {
+</span></span><span style="display:flex;"><span>    Array delayed;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      delayed[c] <span style="color:#f92672">=</span> delays[c].read(delaySamples[c]);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">// Mix using a Householder matrix
+</span></span></span><span style="display:flex;"><span>    Array mixed <span style="color:#f92672">=</span> delayed;
+</span></span><span style="display:flex;"><span>    Householder<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">double</span>, channels<span style="color:#f92672">&gt;::</span>inPlace(mixed.data());
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> c <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>; c <span style="color:#f92672">&lt;</span> channels; <span style="color:#f92672">++</span>c) {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">double</span> sum <span style="color:#f92672">=</span> input[c] <span style="color:#f92672">+</span> mixed[c] <span style="color:#f92672">*</span> decayGain;
+</span></span><span style="display:flex;"><span>      delays[c].write(sum);
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> delayed;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></div><p>这段代码的逻辑就更简单了，只是把 input 的信号 delay 后再 input 进去就可以实现衰减反馈了。</p>
+<p>JUCE 的这行代码可以防止极小值带来的性能问题：<code>juce::ScopedNoDenormals noDenormals;</code></p>
+<hr>
+<h2 id="参数的设置和绑定">参数的设置和绑定</h2>
+<h3 id="juce-中参数的信号链">JUCE 中参数的信号链</h3>
+<p>mix 参数的完整路径：</p>
+<ol>
+<li>PluginProcessor 构造时创建 APVTS，并注册 mix 参数</li>
+<li>Host（DAW/Standalone）读取到该参数（可自动化、可保存）</li>
+<li>PluginEditor 创建 Slider，用 SliderAttachment 绑定 &ldquo;mix&rdquo;</li>
+<li>旋钮变化 -&gt; 参数值进入 APVTS</li>
+<li>processBlock 从 APVTS 原子读取 mix，用于音频计算</li>
+<li>getStateInformation/setStateInformation 负责保存与恢复参数状态</li>
+</ol>
+<hr>
+<h3 id="pluginprocessorh声明参数">PluginProcessor.h：声明参数</h3>
+<p><code>juce::AudioProcessorValueTreeState apvts;</code></p>
+<ul>
+<li>作用：参数容器 + 状态树 + 线程桥接。</li>
+<li>含义：所有参数（mix）都放在这里，供 GUI、Host、DSP 共用。</li>
+</ul>
+<p><code>static ParameterLayout createParameterLayout();</code></p>
+<ul>
+<li>作用：集中定义参数列表（ID、范围、默认值、显示文本逻辑）。</li>
+<li>何时调用：在构造函数初始化 apvts 时调用。</li>
+</ul>
+<p><code>juce::AudioProcessorValueTreeState&amp; getAPVTS();</code></p>
+<ul>
+<li>作用：给 Editor 暴露参数系统，用于创建 attachment。</li>
+</ul>
+<hr>
+<h3 id="pluginprocessorcpp参数创建使用保存">PluginProcessor.cpp：参数创建、使用、保存</h3>
+<p><strong>A. 构造函数列表中实例化 apvts：</strong>
+<code>apvts(*this, nullptr, &quot;Parameters&quot;, createParameterLayout())</code>
+四个参数分别是：</p>
+<ol>
+<li>this：把 APVTS 绑定到当前 AudioProcessor</li>
+<li>nullptr：不使用旧式 UndoManager（常见做法）</li>
+<li>&ldquo;Parameters&rdquo;：根 ValueTree 名称（状态树根节点）</li>
+<li>createParameterLayout()：参数定义集合
+结果：mix 参数注册完成，Host 可见。</li>
+</ol>
+<hr>
+<p><strong>B. createParameterLayout()</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>juce<span style="color:#f92672">::</span>AudioProcessorValueTreeState<span style="color:#f92672">::</span>ParameterLayout
+</span></span><span style="display:flex;"><span>PluginProcessor<span style="color:#f92672">::</span>createParameterLayout() {
+</span></span><span style="display:flex;"><span>  std<span style="color:#f92672">::</span>vector<span style="color:#f92672">&lt;</span>std<span style="color:#f92672">::</span>unique_ptr<span style="color:#f92672">&lt;</span>juce<span style="color:#f92672">::</span>RangedAudioParameter<span style="color:#f92672">&gt;&gt;</span> parameters;
+</span></span><span style="display:flex;"><span>  parameters.push_back(std<span style="color:#f92672">::</span>make_unique<span style="color:#f92672">&lt;</span>juce<span style="color:#f92672">::</span>AudioParameterFloat<span style="color:#f92672">&gt;</span>(
+</span></span><span style="display:flex;"><span>      juce<span style="color:#f92672">::</span>ParameterID{<span style="color:#e6db74">&#34;mix&#34;</span>, <span style="color:#ae81ff">1</span>}, <span style="color:#e6db74">&#34;Mix&#34;</span>,
+</span></span><span style="display:flex;"><span>      juce<span style="color:#f92672">::</span>NormalisableRange<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">float</span><span style="color:#f92672">&gt;</span>(<span style="color:#ae81ff">0.0f</span>, <span style="color:#ae81ff">1.0f</span>, <span style="color:#ae81ff">0.001f</span>), <span style="color:#ae81ff">0.25f</span>, juce<span style="color:#f92672">::</span>String(),
+</span></span><span style="display:flex;"><span>      juce<span style="color:#f92672">::</span>AudioProcessorParameter<span style="color:#f92672">::</span>genericParameter,
+</span></span><span style="display:flex;"><span>      [](<span style="color:#66d9ef">float</span> value, <span style="color:#66d9ef">int</span>) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> juce<span style="color:#f92672">::</span>String(juce<span style="color:#f92672">::</span>roundToInt(value <span style="color:#f92672">*</span> <span style="color:#ae81ff">100.0f</span>)) <span style="color:#f92672">+</span> <span style="color:#e6db74">&#34;%&#34;</span>;
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      [](<span style="color:#66d9ef">const</span> juce<span style="color:#f92672">::</span>String<span style="color:#f92672">&amp;</span> text) {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> juce<span style="color:#f92672">::</span>jlimit(
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">0.0f</span>, <span style="color:#ae81ff">1.0f</span>,
+</span></span><span style="display:flex;"><span>            text.upToFirstOccurrenceOf(<span style="color:#e6db74">&#34;%&#34;</span>, false, false).getFloatValue() <span style="color:#f92672">/</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#ae81ff">100.0f</span>);
+</span></span><span style="display:flex;"><span>      }));
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">return</span> {parameters.begin(), parameters.end()};
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p><code>AudioParameterFloat(ParameterID{&quot;mix&quot;, 1}, &quot;Mix&quot;, range, default, ...)</code></p>
+<ul>
+<li>ParameterID{&ldquo;mix&rdquo;, 1}</li>
+<li>&ldquo;mix&rdquo;：参数唯一 ID</li>
+<li>1：参数版本号（用于后续参数迁移兼容）</li>
+<li>&ldquo;Mix&rdquo;：给 Host/GUI 展示的人类可读名字</li>
+<li><code>NormalisableRange&lt;float&gt;(0.0f, 1.0f, 0.001f)</code>：范围和步进</li>
+<li>0.25f：默认值</li>
+<li>valueToText lambda：内部 0~1 显示成百分比文本</li>
+<li>textToValue lambda：把 &ldquo;25%&rdquo; 解析回 0.25</li>
+</ul>
+<hr>
+<p><strong>C. processBlock(&hellip;)中读取参数</strong>
+<code>apvts.getRawParameterValue(&quot;mix&quot;)-&gt;load()</code></p>
+<ul>
+<li>getRawParameterValue(&ldquo;mix&rdquo;) 返回 <code>std::atomic&lt;float&gt;</code></li>
+<li>load() 是实时线程安全读取（音频线程可用）
+<em>每个 block 读一次，再用于该 block 的样本循环</em></li>
+</ul>
+<hr>
+<p><strong>D. 状态保存与恢复</strong>
+<code>getStateInformation(...)</code></p>
+<ul>
+<li>apvts.copyState() 取出当前参数状态树</li>
+<li>createXml() 转 XML</li>
+<li>copyXmlToBinary(&hellip;) 写给 Host 保存
+<code>setStateInformation(...)</code></li>
+<li>getXmlFromBinary(&hellip;) 读回 XML</li>
+<li>校验 tag 后 apvts.replaceState(&hellip;) 恢复参数</li>
+</ul>
+<hr>
+<h3 id="plugineditorhcpp参数可视化与交互">PluginEditor.h/.cpp：参数可视化与交互</h3>
+<p><strong>A. 组件定义（PluginEditor.h）</strong></p>
+<ul>
+<li><code>juce::Slider mixSlider;</code></li>
+<li><code>std::unique_ptr&lt;SliderAttachment&gt; mixAttachment;</code>
+SliderAttachment 类型是： juce::AudioProcessorValueTreeState::SliderAttachment</li>
+</ul>
+<hr>
+<p><strong>B. 构造函数绑定（PluginEditor.cpp）</strong>
+<code>mixAttachment = std::make_unique&lt;SliderAttachment&gt;(processorRef.getAPVTS(), &quot;mix&quot;, mixSlider);</code>
+完成双向同步：</p>
+<ol>
+<li>参数变动 -&gt; 旋钮位置自动更新</li>
+<li>旋钮拖动 -&gt; APVTS 里的 &ldquo;mix&rdquo; 自动更新</li>
+</ol>
+<hr>
+<p><strong class=chinese>实际调用顺序</strong></p>
+<ol>
+<li>插件实例化</li>
+</ol>
+<ul>
+<li>调 PluginProcessor::PluginProcessor()</li>
+<li>APVTS + mix 创建并注册到 Host</li>
+</ul>
+<ol start="2">
+<li>打开 GUI</li>
+</ol>
+<ul>
+<li>调 createEditor() -&gt; PluginEditor 构造</li>
+<li>建立 SliderAttachment</li>
+</ul>
+<ol start="3">
+<li>用户转旋钮</li>
+</ol>
+<ul>
+<li>mixSlider 值变</li>
+<li>attachment 写入 APVTS 的 &ldquo;mix&rdquo;</li>
+</ul>
+<ol start="4">
+<li>音频回调</li>
+</ol>
+<ul>
+<li>周期性调 processBlock</li>
+<li>原子读取 &ldquo;mix&rdquo;，作用于音频</li>
+</ul>
+<ol start="5">
+<li>保存工程</li>
+</ol>
+<ul>
+<li>Host 调 getStateInformation，存参数树</li>
+</ul>
+<ol start="6">
+<li>重开工程</li>
+</ol>
+<ul>
+<li>Host 调 setStateInformation，还原参数树</li>
+<li>attachment 使 GUI 自动显示恢复后的值</li>
+</ul>
+<h2 id="小结">小结</h2>
+<p>至此我们完成了一个简单但效果还不错的 reverb，所有代码和一个简易的演示 VST 都在这个仓库：<a href="https://github.com/oreru/EasyEffect">oreru/EasyEffect: a simple project trying juce for plugin</a>。跑通整个流程之后，发现 DSP、插件这些领域也终于没有那么黑盒了，但想自己从零把原理到代码手搓出来还是很有难度。好在摸清原理后能够明白改动哪些代码会影响什么东西，之后可能会从这方面去探索插件和音频编程的可能性。</p>
+
+      
+    </article>
+  </div>
+
+  <button onclick="topFunction()" id="back-to-top" title="Go to top">Back to Top</button>
+
+  
+
+<div id="sharingbuttons">
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+
+    
+    
+</div>
+  <div class="paginator">
+    
+    <a class="link" href="https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" title="Wwise101学习笔记">← prev</a>
+    
+    
+    <a class="link" href="https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/" title="SLS - ReaScript">next →</a>
+    
+  </div>
+  <div class="comment">
+    
+    
+    
+      <script src="https://giscus.app/client.js"
+        data-repo="michaelneuper/website"
+        data-repo-id="R_kgDOIjPNaQ"
+        data-category="General"
+        data-category-id="DIC_kwDOIjPNac4CaklA"
+        data-mapping="pathname"
+        data-strict="0"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-input-position="top"
+        data-theme="gruvbox"
+        data-lang="en"
+        data-loading="lazy"
+        crossorigin="anonymous"
+        async>
+  </script>
+  
+  </div>
+  
+  
+</main>
+
+    <footer id="footer"> 
+  <p>Oreru's Blog</p>
+  <div>
+    <span>Powered by  <a class=link href=https://gohugo.io target=_blank rel=noopener>Hugo</a> | 
+Theme <a class=link href=https://github.com/michaelneuper/hugo-texify3 target=_blank rel=noopener>TeXify3</a>
+</span>
+  </div>
+  <div>
+    <span>Copyright © 2026 Michael Neuper</span>
+  </div>
+
+</footer>
+
+  </div>
+
+  
+  <script src='https://oreru.github.io/oreru_blog_site/js/script.js' defer></script>
+
+  
+  
+
+  
+  
+
+  
+  
+
+</body>
+
+</html>

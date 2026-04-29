@@ -8,12 +8,13 @@
     <language>en</language>
     <lastBuildDate>Wed, 11 Mar 2026 12:26:48 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/tags/daily-learning/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Test</title>
-      <link>https://oreru.github.io/oreru_blog_site/posts/test/</link>
+      <title>Wwise101学习笔记</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 11 Mar 2026 12:26:48 +0800</pubDate>
       
-      <guid>https://oreru.github.io/oreru_blog_site/posts/test/</guid>
-      <description>&lt;h3 id=&#34;创建event&#34;&gt;创建event&lt;/h3&gt;
+      <guid>https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;h2 id=&#34;发出第一个声音&#34;&gt;发出第一个声音&lt;/h2&gt;
+&lt;h3 id=&#34;创建event&#34;&gt;创建event&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;用于wwise捕捉输入的游戏调用&lt;/li&gt;
 &lt;li&gt;layout&lt;/li&gt;

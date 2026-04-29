@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sound Redesign on Oreru&#39;s Blog</title>
+    <link>https://oreru.github.io/oreru_blog_site/tags/sound-redesign/</link>
+    <description>Recent content in Sound Redesign on Oreru&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Tue, 14 Apr 2026 10:10:00 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/tags/sound-redesign/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My Sound Redesigns</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/sound_redesign/</link>
+      <pubDate>Tue, 14 Apr 2026 10:10:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/sound_redesign/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;由于网站图床带宽问题可能会有些许卡顿，作品同时也会在 B 站发布，附件压缩包中也有。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;routine-gameplay-sound-redesign&#34;&gt;Routine Gameplay Sound Redesign&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;恐怖/科幻/写实/氛围&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本作品没有用到任何音效库，所有音效都来自合成器(Ableton Wavetable、PhasePlant)或个人Sample Pack&lt;/strong&gt;&lt;/p&gt;
+&lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/GwAD/Routine.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;
+&lt;h2 id=&#34;tunic-gameplay-sound-redesign&#34;&gt;Tunic Gameplay Sound Redesign&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;可爱/科幻/地下城/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本作品没有用到任何音效库，所有音效都来自合成器(Ableton Wavetable、PhasePlant)或个人Sample Pack&lt;/strong&gt;&lt;/p&gt;
+&lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/yWvi/TUNIC.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -6,14 +6,393 @@
     <description>Recent content in Posts on Oreru&#39;s Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
-    <lastBuildDate>Wed, 11 Mar 2026 12:26:48 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 26 Apr 2026 10:18:00 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Test</title>
-      <link>https://oreru.github.io/oreru_blog_site/posts/test/</link>
+      <title>UE&amp;Wwise集成小项目</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/ue-_wwise_%E9%9B%86%E6%88%90/</link>
+      <pubDate>Sun, 26 Apr 2026 10:18:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/ue-_wwise_%E9%9B%86%E6%88%90/</guid>
+      <description>&lt;p&gt;本文将以一个包含室内外场景、多种地面材质及水下环境的简单测试关卡为例，如实阐述如何使用Wwise和Unreal Engine来完成最基础但又不可或缺的声音资产整合工作，希望能把整个流程和思路梳理清楚。&lt;/p&gt;
+&lt;p&gt;项目地址 &lt;a href=&#34;https://github.com/oreru/SHU-GAD-ChenJunFeng&#34;&gt;https://github.com/oreru/SHU-GAD-ChenJunFeng&lt;/a&gt;&lt;/p&gt;
+&lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Rck0/GAD_%E6%BC%94%E7%A4%BA.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;
+&lt;h2 id=&#34;wwise中声音资产的层级结构&#34;&gt;Wwise中声音资产的层级结构&lt;/h2&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/Trvg/411X513/image.png/webp&#34; alt=&#34;Wwise Structure&#34;/&gt;
+&lt;p&gt;如上图所示，整个项目主要设计了几个模块，篝火的声音资产及相应的衰减曲线，角色脚步foley的声音资产整合，角色衣物foley的声音资产整合，语音播放的声音资产整合，户外环境声声音资产和一个水下环境声声音资产的整合。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/1JSd/407X435/image.png/webp&#34; alt=&#34;Wwise Structure&#34;/&gt;
+&lt;p&gt;在game sync板块中还可以看到对鞋子种类和地面材质种类的switch group的设计和一个用于切换水上水下状态的state group设计。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;ue中资产的大致描述&#34;&gt;UE中资产的大致描述&lt;/h2&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/B2Ax/864X429/image.png/webp&#34; alt=&#34;UE Structure&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt; 
+&lt;p&gt;接下来是引擎端的基础布置。如上图所示，这个项目在UE中的地图主要分为室外和室内两个部分。室外区域布置了四种不同物理材质的地面以及一处篝火，方便我们测试脚步声的切换。室内的声音则统一通过Aux Bus接入混响效果器来产生室内空间的混响效果，房间内同样内置了一个篝火、一处水声环境以及人物的语音资产。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;声音资产整合的详细说明&#34;&gt;声音资产整合的详细说明&lt;/h2&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/MFJc/770X205/image.png/webp&#34; alt=&#34;UE Structure&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt; 
+&lt;p&gt;由于有三段语音，所以很自然地将三段资产放入一个sequence container中，调整play mode和 loop后就可以流畅地按顺序播放三段语音稍微调整一下。接着给它们画一条合理的距离衰减曲线，创建出Event，直接在UE里把Event拖进场景中就完成了基础整合。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/0BqD/773X245/image.png/webp&#34; alt=&#34;UE Structure&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt; 
+&lt;p&gt;角色衣物和装备的Foley声音需要一点点随机感。我首先把声音按类型放入对应的Random Container中，并对它们的音高进行了简单的随机化处理。然后把它们统统丢进一个Blend Container里，这样就能实现衣物和装备摩擦声的同时播放。进入UE后，只需要在角色的动画序列合适的位置打上Anim Notify，就能触发对应的声音。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/kud8/759X199/image.png/webp&#34; alt=&#34;UE Structure&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt; 
+&lt;p&gt;篝火的声音稍微分了一下层，包含了两个Random Container层次和一个Loop背景底音，同样是装进Blend Container中混合。为了听起来不那么死板，我特意对木柴燃烧的Crack层进行了随机音高的设置。虽然效果不是那种特别夸张的明显，但在安静的时候还是能听出那一点点灵动的火星声的。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/zDnG/767X395/image.png/webp&#34; alt=&#34;UE Structure&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt; 
+&lt;p&gt;脚步声的整合是这个项目里稍微复杂一点的地方。首先把声音资产分为四类材质导入对应的Random Container中，用一个判断材质的Switch Container整合起来，并让它与刚才在Game Syncs里建好的材质Switch Group连上。在这个节点之上，还有一个叫做FOL_FS_Run的Switch Container，它负责与鞋子类型的Switch Group连接，从而达到“穿什么鞋”加“踩什么地”的双重条件判断效果。&lt;/p&gt;
+&lt;p&gt;进入UE的具体实现思路是，首先在角色奔跑动画里打上Anim Notify。进入通知蓝图之后，拿到这个Notify和角色脚部骨骼的Socket Location，向下打一条射线（Line Trace）进行检测。拿到当前检测到的物理材质后，用一个Ak Component接住，通过一个Switch结构正确地切换到对应的状态上，最后播放出对应的Ak Event。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;水声切换设计&#34;&gt;水声切换设计&lt;/h2&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/PQ6G/866X540/image.png/webp&#34; alt=&#34;State&#34;&gt;  
+&lt;p&gt;单靠触发播放还不够，空间的变化也需要声音来反馈.对于水声的切换，我设计了一个State Group。我只用了一个水声资产，但是在状态切换时，通过改变它的Pitch和滤波器的效果来制造出水上到水下那种沉闷的过渡感。为了沉浸感更强一点，室内的语音声和角色的Foley同样也绑定了这个State Group。这样在角色潜水时，所有的声音都会同步变成水下的听感。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/JX2i/866X380/image.png/webp&#34; alt=&#34;State In UE&#34;&gt;
+&lt;p&gt;在UE里面，我为这个水池设置了一个Trigger Box，当角色走进和走入这个碰撞盒时，就能触发对应的State切换，实现状态逻辑在UE里的落地。&lt;/p&gt;
+&lt;p&gt;最后，所有的室内声音都做了辅助发送，统一走到Reverb轨，这样一进入房间就能听到明显的回响。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;最后&#34;&gt;最后&lt;/h2&gt;
+&lt;p&gt;虽然这只是一个非常简单的实践项目，并没有用到多么深奥的算法或程序化生成的复杂参数，但它完整走通了从Wwise声音层级构建、逻辑判定设计，再到UE蓝图射线检测与状态触发的整套流程。作为我入门游戏音频设计的项目来说，这种“什么时候响”、“怎么响”的事件触发式实现规则，是做线性音频设计所感受不到的体验。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>My Sound Redesigns</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/sound_redesign/</link>
+      <pubDate>Tue, 14 Apr 2026 10:10:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/sound_redesign/</guid>
+      <description>&lt;blockquote&gt;
+&lt;p&gt;由于网站图床带宽问题可能会有些许卡顿，作品同时也会在 B 站发布，附件压缩包中也有。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&#34;routine-gameplay-sound-redesign&#34;&gt;Routine Gameplay Sound Redesign&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;恐怖/科幻/写实/氛围&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本作品没有用到任何音效库，所有音效都来自合成器(Ableton Wavetable、PhasePlant)或个人Sample Pack&lt;/strong&gt;&lt;/p&gt;
+&lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/GwAD/Routine.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;
+&lt;h2 id=&#34;tunic-gameplay-sound-redesign&#34;&gt;Tunic Gameplay Sound Redesign&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;可爱/科幻/地下城/&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;本作品没有用到任何音效库，所有音效都来自合成器(Ableton Wavetable、PhasePlant)或个人Sample Pack&lt;/strong&gt;&lt;/p&gt;
+&lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/yWvi/TUNIC.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  Your browser does not support the video tag.
+&lt;/video&gt;</description>
+    </item>
+    
+    <item>
+      <title>SLS - ReaScript</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/</link>
+      <pubDate>Fri, 27 Mar 2026 10:10:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/</guid>
+      <description>&lt;p&gt;下载方式:&lt;/p&gt;
+&lt;p&gt;在reaper中的Extension-&amp;gt;Reapack-&amp;gt;Import repositories粘贴&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/oreru/SLS-Reascripts/refs/heads/master/index.xml&#34;&gt;https://raw.githubusercontent.com/oreru/SLS-Reascripts/refs/heads/master/index.xml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;或直接在这个地址下载并在reaper中手动导入&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/oreru/SLS-Reascripts&#34;&gt;https://github.com/oreru/SLS-Reascripts&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sls---item-reposition&#34;&gt;SLS - Item reposition&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;脚本依赖 ReaImGui 扩展，没有安装会提示并退出。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这个脚本会按时间顺序重新分布所选 items，把每个 item（或分组）当作一个单位，重新计算目标时间点后整体平移。支持间隔设置、整体缩放、曲线分布、随机偏移，并可选择对齐网格，还能在移动 items 时同步移动对应轨道的自动化包络点。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Rygq/1202X564/Item_Position.gif&#34; alt=&#34;SLS item reposition demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt; ：在 REAPER 中先选中要重新排列的 items，然后运行脚本并在界面里调整 Interval、Scale、Curve、Random Offset 等参数，拖动参数时会实时预览结果。需要时勾选 Groups 以分组为单位、勾选 Automation 以移动包络、勾选 Snap offsets 以对齐网格，满意后点击 Apply 应用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;这个脚本依赖 ReaImGui 扩展，核心界面与交互使用 `reaper.ImGui_CreateContext`、`reaper.ImGui_Begin`、`reaper.ImGui_Text`、`reaper.ImGui_SliderDouble`、`reaper.ImGui_DragDouble`、`reaper.ImGui_Checkbox`、`reaper.ImGui_Button`、`reaper.ImGui_End`、`reaper.ImGui_DestroyContext` 与 `reaper.defer`。
+它对 item 的读取与移动主要使用 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetMediaItemInfo_Value`、`reaper.SetMediaItemPosition`、`reaper.GetMediaItemTrack`、`reaper.PreventUIRefresh`、`reaper.UpdateArrange`，并在需要时使用 `reaper.SnapToGrid` 对齐。
+如果启用自动化跟随，会调用包络相关 API，包括 `reaper.CountTrackEnvelopes`、`reaper.GetTrackEnvelope`、`reaper.CountEnvelopePointsEx`/`reaper.CountEnvelopePoints`、`reaper.GetEnvelopePointEx`/`reaper.GetEnvelopePoint`、`reaper.SetEnvelopePointEx`/`reaper.SetEnvelopePoint`、`reaper.InsertEnvelopePointEx`/`reaper.InsertEnvelopePoint`、`reaper.DeleteEnvelopePointRangeEx`/`reaper.DeleteEnvelopePointRange`、`reaper.Envelope_SortPointsEx`/`reaper.SortEnvelopePointsEx`/`reaper.Envelope_SortPoints`。
+撤销与错误处理使用 `reaper.Undo_BeginBlock`、`reaper.Undo_EndBlock`、`reaper.ShowMessageBox`。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;sls---switch-to-items-next-transient&#34;&gt;SLS - Switch to item&amp;rsquo;s next transient&lt;/h2&gt;
+&lt;p&gt;这个脚本会把当前选中的音频 item 切换到下一个瞬态区段，并自动调整 item 长度以匹配该区段。脚本会扫描源音频并缓存分段结果，下次运行会直接读取缓存，且能正确处理 take 的播放速率。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Sl7t/774X594/Switch_to_next_transient.gif&#34; alt=&#34;SLS switch to next transient demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：只选中一个音频 item 后运行脚本，它会跳到下一个检测到的声音区块并更新 start offset 与长度。需要改变检测灵敏度时，直接修改脚本开头的 threshold_db、min_silence_ms、min_segment_ms、analysis_hop_ms 以及 pre_roll_ms、post_roll_ms，再重新运行即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;该脚本的核心是读取音频源并检测瞬态区段，主要涉及 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetActiveTake`、`reaper.TakeIsMIDI`、`reaper.GetMediaItemTake_Source`、`reaper.GetMediaSourceLength`、`reaper.GetMediaSourceFileName`、`reaper.GetMediaSourceNumChannels`、`reaper.CreateTakeAudioAccessor`、`reaper.GetAudioAccessorSamples`、`reaper.DestroyAudioAccessor`。
+它对 item 与 take 的读写使用 `reaper.GetMediaItemInfo_Value`、`reaper.SetMediaItemInfo_Value`、`reaper.GetMediaItemTakeInfo_Value`、`reaper.SetMediaItemTakeInfo_Value`、`reaper.UpdateItemInProject`、`reaper.UpdateArrange`，并通过 `reaper.GetSetMediaItemInfo_String` 保存与读取缓存。
+撤销与提示相关 API 是 `reaper.Undo_BeginBlock`、`reaper.Undo_EndBlock`、`reaper.ShowMessageBox`。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;sls---select-regions-of-items-parent-track-in-matrix&#34;&gt;SLS - Select regions of items&amp;rsquo; parent track in matrix&lt;/h2&gt;
+&lt;p&gt;这个脚本会遍历所选 items，与项目中所有 regions 做时间重叠判断，把发生重叠的 regions 在 Region Render Matrix 中勾选到这些 items 所在轨道的“上一级父轨道”。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/VS3P/1192X618/Region_Select.gif/webp&#34; alt=&#34;SLS region select demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：在项目里先创建 regions，再选中一个或多个 items，运行脚本即可自动完成矩阵勾选。若选中多个 items，会把所有满足重叠条件的 regions 一并设置到对应的父轨道上。&lt;/p&gt;
+&lt;h2 id=&#34;sls---select-regions-of-items-top-track-in-matrix&#34;&gt;SLS - Select regions of items&amp;rsquo; top track in matrix&lt;/h2&gt;
+&lt;p&gt;这个脚本与上一个类似，但目标轨道改为“最顶层父轨道”，也就是一路向上查找到的最高级父轨道。它同样根据所选 items 的时间范围与 regions 的重叠关系来设置 Region Render Matrix。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：先准备好 regions，选中一个或多个 items 并运行脚本。脚本会把所有重叠 regions 设置到这些 items 对应的最顶层父轨道上，适合需要把结果汇总到顶层总线的场景。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;上述两个脚本主要依赖标记与 region 枚举，以及 Region Render Matrix 设置，核心 API 包括 `reaper.EnumProjectMarkers` 与 `reaper.SetRegionRenderMatrix`。
+它在 item 和轨道层面使用 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetMediaItem_Track`、`reaper.GetParentTrack`、`reaper.GetMediaItemInfo_Value`。调试输出使用 `reaper.ShowConsoleMsg`。
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+    <item>
+      <title>用 JUCE 构建一个 Reverb 效果器</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/easyreverb/</link>
+      <pubDate>Sun, 15 Mar 2026 10:18:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/easyreverb/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;作为之后会做的 Convolution Reverb 的前置准备和调研。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;项目地址:https://github.com/oreru/EasyEffect&lt;/p&gt;
+&lt;p&gt;首先在 Visual Studio 中部署好 Wolfsound 提供的 JUCE 插件模板。&lt;/p&gt;
+&lt;h2 id=&#34;混响-dsp-的实现&#34;&gt;混响 DSP 的实现&lt;/h2&gt;
+&lt;h3 id=&#34;feedback-delay-loop&#34;&gt;Feedback Delay Loop&lt;/h3&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/M9cg/510X163/Pasted_image_20260326101807.png&#34; alt=&#34;Feedback delay loop diagram&#34; style=&#34;max-width: 720px; width: 80%; height: auto;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;p&gt;在现实中，一个声音在房间中反复反弹扩散形成的回声和梳状滤波，这是我们辨别混响重要的特征，这幅图就体现了一种简易的回声发声器。&lt;/p&gt;
+&lt;p&gt;信号进入系统之后，先通过 delay 进行时间上的延迟，一部分信号直接输出，另一部分则是进入一个衰减的乘法器中再通过延迟输出，这样每次延迟输出的信号能量都比前一次小。&lt;/p&gt;
+&lt;p&gt;由此对单个信号我们有了这样一种让它在时间上进行扩散的结构，但是听起来更像是具有金属感的声音（梳状滤波），所以我们需要把上述结构拓展成多通道的。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/uKaR/880X278/Pasted_image_20260326103939.png&#34; alt=&#34;Multi-channel feedback delay structure&#34; style=&#34;max-width: 720px; width: 80%; height: auto;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;p&gt;现在我们有 multi channel 的信号进入这个系统，同样还是经过 delay，但是这次对每个通道的 delay time 都不一样。每个通道的信号经过衰减之后进入一个混合矩阵，这个矩阵的作用是把每个通道的信号都分发给所有通道，比如 channel 1 的信号进入矩阵后，通道 1 的回声会被按比例分配给通道 1、2、3、4 的输入。&lt;/p&gt;
+&lt;p&gt;为了保证这个矩阵不会无限发散所有信号，我们需要使用正交矩阵，保证前后的信号能量相一致。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/K7Qe/512X171/Pasted_image_20260326102430.png&#34; alt=&#34;Orthogonal mixing matrix&#34; style=&#34;max-width: 720px; width: 80%; height: auto;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;p&gt;现在我们的系统在时间上已经能够不错的进行扩散和持续，但是听起来还是只是很多信号的衰减延迟，没有把声音打碎成粒子的云雾感。&lt;/p&gt;
+&lt;p&gt;所以我们专门增加一步来先把信号进行扩散，再进入先前提到的 feedback loop 中。&lt;/p&gt;
+&lt;p&gt;多通道的信号在经过不同时间的 delay 后，对某些通道的信号进行反相，来打破信号的相干性。这一步还可能交换不同通道的信号，增加信号的复杂度。最后经过一个正交矩阵，把所有通道的信号平均输出到四个通道中。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/K7Qe/512X171/Pasted_image_20260326102430.png&#34; alt=&#34;Diffusion step overview&#34; style=&#34;max-width: 720px; width: 80%; height: auto;&#34; loading=&#34;lazy&#34; /&gt;
+&lt;p&gt;最后我们把两个系统整合在一起，信号可能经过很多步的扩散，最后进入 feedback loop。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;算法实现&#34;&gt;算法实现&lt;/h2&gt;
+&lt;h3 id=&#34;diffusion-step&#34;&gt;Diffusion Step&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; channels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;DiffusionStep&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;using&lt;/span&gt; Array &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; delayMsRange &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;20&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; delaySamples;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Delay, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; delays;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;bool&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; flipPolarity;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;configure&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; sampleRate) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; delaySamplesRange &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delayMsRange &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; sampleRate;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; rangeLow &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delaySamplesRange &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; channels;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; rangeHigh &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delaySamplesRange &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; (c &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; channels;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delaySamples[c] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; randomInRange(rangeLow, rangeHigh);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].resize(delaySamples[c] &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].reset();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      flipPolarity[c] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rand() &lt;span style=&#34;color:#f92672&#34;&gt;%&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Array &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;(Array input) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Delay
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Array delayed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].write(input[c]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delayed[c] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delays[c].read(delaySamples[c]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Mix with a Hadamard matrix
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Array mixed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delayed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Hadamard&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;::&lt;/span&gt;inPlace(mixed.data());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Flip some polarities
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; (flipPolarity[c])
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        mixed[c] &lt;span style=&#34;color:#f92672&#34;&gt;*=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;-&lt;/span&gt;&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; mixed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;DiffusionStep 的代码主要分为两个部分：configure 和 process，方便我们在 PluginProcessor 里面的 &lt;code&gt;PrepareToPlay()&lt;/code&gt; 和 &lt;code&gt;ProcessBlock()&lt;/code&gt; 里进行调用。&lt;/p&gt;
+&lt;p&gt;代码中的 Delay 类主要使用了 &lt;a href=&#34;https://signalsmith-audio.co.uk/&#34;&gt;Signalsmith Audio&lt;/a&gt; 的 DSP 库，大部分代码也是学习自这个 DSP 库作者在 ADC 上的演讲 &lt;a href=&#34;https://www.youtube.com/watch?v=6ZK2Goiyotk&amp;amp;t=1469s&#34;&gt;Let&amp;rsquo;s Write a Reverb - Geraint Luff - ADC21&lt;/a&gt;，可以说是我看过最清晰的 DSP 小白向讲解了。&lt;/p&gt;
+&lt;p&gt;在 &lt;code&gt;process()&lt;/code&gt; 中我们可以清楚地看到之前所说的三个用于 diffusion 的步骤：delay、mix matrix 和 flip polarity。&lt;/p&gt;
+&lt;h3 id=&#34;feedback-loop&#34;&gt;Feedback Loop&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;template&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; channels &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;8&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;struct&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;MultiChannelMixedFeedback&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;using&lt;/span&gt; Array &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; delayMs &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;50&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; decayGain &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.85&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; delaySamples;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;array&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;Delay, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt; delays;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;void&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;configure&lt;/span&gt;(&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; sampleRate) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; delaySamplesBase &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delayMs &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; sampleRate;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; r &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1.0&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt; channels;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delaySamples[c] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;pow(&lt;span style=&#34;color:#ae81ff&#34;&gt;2&lt;/span&gt;, r) &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; delaySamplesBase;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].resize(delaySamples[c] &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].reset();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  Array &lt;span style=&#34;color:#a6e22e&#34;&gt;process&lt;/span&gt;(Array input) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Array delayed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delayed[c] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delays[c].read(delaySamples[c]);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#75715e&#34;&gt;// Mix using a Householder matrix
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Array mixed &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; delayed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Householder&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt;, channels&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;::&lt;/span&gt;inPlace(mixed.data());
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;for&lt;/span&gt; (&lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0&lt;/span&gt;; c &lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt; channels; &lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;c) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      &lt;span style=&#34;color:#66d9ef&#34;&gt;double&lt;/span&gt; sum &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; input[c] &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; mixed[c] &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; decayGain;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      delays[c].write(sum);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; delayed;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;};
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;这段代码的逻辑就更简单了，只是把 input 的信号 delay 后再 input 进去就可以实现衰减反馈了。&lt;/p&gt;
+&lt;p&gt;JUCE 的这行代码可以防止极小值带来的性能问题：&lt;code&gt;juce::ScopedNoDenormals noDenormals;&lt;/code&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;参数的设置和绑定&#34;&gt;参数的设置和绑定&lt;/h2&gt;
+&lt;h3 id=&#34;juce-中参数的信号链&#34;&gt;JUCE 中参数的信号链&lt;/h3&gt;
+&lt;p&gt;mix 参数的完整路径：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;PluginProcessor 构造时创建 APVTS，并注册 mix 参数&lt;/li&gt;
+&lt;li&gt;Host（DAW/Standalone）读取到该参数（可自动化、可保存）&lt;/li&gt;
+&lt;li&gt;PluginEditor 创建 Slider，用 SliderAttachment 绑定 &amp;ldquo;mix&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;旋钮变化 -&amp;gt; 参数值进入 APVTS&lt;/li&gt;
+&lt;li&gt;processBlock 从 APVTS 原子读取 mix，用于音频计算&lt;/li&gt;
+&lt;li&gt;getStateInformation/setStateInformation 负责保存与恢复参数状态&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;pluginprocessorh声明参数&#34;&gt;PluginProcessor.h：声明参数&lt;/h3&gt;
+&lt;p&gt;&lt;code&gt;juce::AudioProcessorValueTreeState apvts;&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;作用：参数容器 + 状态树 + 线程桥接。&lt;/li&gt;
+&lt;li&gt;含义：所有参数（mix）都放在这里，供 GUI、Host、DSP 共用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;static ParameterLayout createParameterLayout();&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;作用：集中定义参数列表（ID、范围、默认值、显示文本逻辑）。&lt;/li&gt;
+&lt;li&gt;何时调用：在构造函数初始化 apvts 时调用。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;code&gt;juce::AudioProcessorValueTreeState&amp;amp; getAPVTS();&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;作用：给 Editor 暴露参数系统，用于创建 attachment。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;pluginprocessorcpp参数创建使用保存&#34;&gt;PluginProcessor.cpp：参数创建、使用、保存&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;A. 构造函数列表中实例化 apvts：&lt;/strong&gt;
+&lt;code&gt;apvts(*this, nullptr, &amp;quot;Parameters&amp;quot;, createParameterLayout())&lt;/code&gt;
+四个参数分别是：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;this：把 APVTS 绑定到当前 AudioProcessor&lt;/li&gt;
+&lt;li&gt;nullptr：不使用旧式 UndoManager（常见做法）&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Parameters&amp;rdquo;：根 ValueTree 名称（状态树根节点）&lt;/li&gt;
+&lt;li&gt;createParameterLayout()：参数定义集合
+结果：mix 参数注册完成，Host 可见。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;B. createParameterLayout()&lt;/strong&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;&#34;&gt;&lt;code class=&#34;language-cpp&#34; data-lang=&#34;cpp&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;AudioProcessorValueTreeState&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;ParameterLayout
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;PluginProcessor&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;createParameterLayout() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;vector&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;unique_ptr&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;RangedAudioParameter&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; parameters;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  parameters.push_back(std&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;make_unique&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;AudioParameterFloat&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;ParameterID{&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;mix&amp;#34;&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;}, &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Mix&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;NormalisableRange&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt;&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&lt;/span&gt;(&lt;span style=&#34;color:#ae81ff&#34;&gt;0.0f&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1.0f&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;0.001f&lt;/span&gt;), &lt;span style=&#34;color:#ae81ff&#34;&gt;0.25f&lt;/span&gt;, juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;String(),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;AudioProcessorParameter&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;genericParameter,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      [](&lt;span style=&#34;color:#66d9ef&#34;&gt;float&lt;/span&gt; value, &lt;span style=&#34;color:#66d9ef&#34;&gt;int&lt;/span&gt;) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;String(juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;roundToInt(value &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;100.0f&lt;/span&gt;)) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%&amp;#34;&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      },
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      [](&lt;span style=&#34;color:#66d9ef&#34;&gt;const&lt;/span&gt; juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;String&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt; text) {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; juce&lt;span style=&#34;color:#f92672&#34;&gt;::&lt;/span&gt;jlimit(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            &lt;span style=&#34;color:#ae81ff&#34;&gt;0.0f&lt;/span&gt;, &lt;span style=&#34;color:#ae81ff&#34;&gt;1.0f&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;            text.upToFirstOccurrenceOf(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;%&amp;#34;&lt;/span&gt;, false, false).getFloatValue() &lt;span style=&#34;color:#f92672&#34;&gt;/&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;                &lt;span style=&#34;color:#ae81ff&#34;&gt;100.0f&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      }));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;  &lt;span style=&#34;color:#66d9ef&#34;&gt;return&lt;/span&gt; {parameters.begin(), parameters.end()};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;code&gt;AudioParameterFloat(ParameterID{&amp;quot;mix&amp;quot;, 1}, &amp;quot;Mix&amp;quot;, range, default, ...)&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;ParameterID{&amp;ldquo;mix&amp;rdquo;, 1}&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;mix&amp;rdquo;：参数唯一 ID&lt;/li&gt;
+&lt;li&gt;1：参数版本号（用于后续参数迁移兼容）&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;Mix&amp;rdquo;：给 Host/GUI 展示的人类可读名字&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;NormalisableRange&amp;lt;float&amp;gt;(0.0f, 1.0f, 0.001f)&lt;/code&gt;：范围和步进&lt;/li&gt;
+&lt;li&gt;0.25f：默认值&lt;/li&gt;
+&lt;li&gt;valueToText lambda：内部 0~1 显示成百分比文本&lt;/li&gt;
+&lt;li&gt;textToValue lambda：把 &amp;ldquo;25%&amp;rdquo; 解析回 0.25&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;C. processBlock(&amp;hellip;)中读取参数&lt;/strong&gt;
+&lt;code&gt;apvts.getRawParameterValue(&amp;quot;mix&amp;quot;)-&amp;gt;load()&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;getRawParameterValue(&amp;ldquo;mix&amp;rdquo;) 返回 &lt;code&gt;std::atomic&amp;lt;float&amp;gt;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;load() 是实时线程安全读取（音频线程可用）
+&lt;em&gt;每个 block 读一次，再用于该 block 的样本循环&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;D. 状态保存与恢复&lt;/strong&gt;
+&lt;code&gt;getStateInformation(...)&lt;/code&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;apvts.copyState() 取出当前参数状态树&lt;/li&gt;
+&lt;li&gt;createXml() 转 XML&lt;/li&gt;
+&lt;li&gt;copyXmlToBinary(&amp;hellip;) 写给 Host 保存
+&lt;code&gt;setStateInformation(...)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;getXmlFromBinary(&amp;hellip;) 读回 XML&lt;/li&gt;
+&lt;li&gt;校验 tag 后 apvts.replaceState(&amp;hellip;) 恢复参数&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;h3 id=&#34;plugineditorhcpp参数可视化与交互&#34;&gt;PluginEditor.h/.cpp：参数可视化与交互&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;A. 组件定义（PluginEditor.h）&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;juce::Slider mixSlider;&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;std::unique_ptr&amp;lt;SliderAttachment&amp;gt; mixAttachment;&lt;/code&gt;
+SliderAttachment 类型是： juce::AudioProcessorValueTreeState::SliderAttachment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;B. 构造函数绑定（PluginEditor.cpp）&lt;/strong&gt;
+&lt;code&gt;mixAttachment = std::make_unique&amp;lt;SliderAttachment&amp;gt;(processorRef.getAPVTS(), &amp;quot;mix&amp;quot;, mixSlider);&lt;/code&gt;
+完成双向同步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;参数变动 -&amp;gt; 旋钮位置自动更新&lt;/li&gt;
+&lt;li&gt;旋钮拖动 -&amp;gt; APVTS 里的 &amp;ldquo;mix&amp;rdquo; 自动更新&lt;/li&gt;
+&lt;/ol&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;strong&gt;实际调用顺序&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;插件实例化&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;调 PluginProcessor::PluginProcessor()&lt;/li&gt;
+&lt;li&gt;APVTS + mix 创建并注册到 Host&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;2&#34;&gt;
+&lt;li&gt;打开 GUI&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;调 createEditor() -&amp;gt; PluginEditor 构造&lt;/li&gt;
+&lt;li&gt;建立 SliderAttachment&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;3&#34;&gt;
+&lt;li&gt;用户转旋钮&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;mixSlider 值变&lt;/li&gt;
+&lt;li&gt;attachment 写入 APVTS 的 &amp;ldquo;mix&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;4&#34;&gt;
+&lt;li&gt;音频回调&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;周期性调 processBlock&lt;/li&gt;
+&lt;li&gt;原子读取 &amp;ldquo;mix&amp;rdquo;，作用于音频&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;5&#34;&gt;
+&lt;li&gt;保存工程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Host 调 getStateInformation，存参数树&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ol start=&#34;6&#34;&gt;
+&lt;li&gt;重开工程&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Host 调 setStateInformation，还原参数树&lt;/li&gt;
+&lt;li&gt;attachment 使 GUI 自动显示恢复后的值&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;小结&#34;&gt;小结&lt;/h2&gt;
+&lt;p&gt;至此我们完成了一个简单但效果还不错的 reverb，所有代码和一个简易的演示 VST 都在这个仓库：&lt;a href=&#34;https://github.com/oreru/EasyEffect&#34;&gt;oreru/EasyEffect: a simple project trying juce for plugin&lt;/a&gt;。跑通整个流程之后，发现 DSP、插件这些领域也终于没有那么黑盒了，但想自己从零把原理到代码手搓出来还是很有难度。好在摸清原理后能够明白改动哪些代码会影响什么东西，之后可能会从这方面去探索插件和音频编程的可能性。&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Wwise101学习笔记</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</link>
       <pubDate>Wed, 11 Mar 2026 12:26:48 +0800</pubDate>
       
-      <guid>https://oreru.github.io/oreru_blog_site/posts/test/</guid>
-      <description>&lt;h3 id=&#34;创建event&#34;&gt;创建event&lt;/h3&gt;
+      <guid>https://oreru.github.io/oreru_blog_site/posts/wwise101%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</guid>
+      <description>&lt;h2 id=&#34;发出第一个声音&#34;&gt;发出第一个声音&lt;/h2&gt;
+&lt;h3 id=&#34;创建event&#34;&gt;创建event&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;用于wwise捕捉输入的游戏调用&lt;/li&gt;
 &lt;li&gt;layout&lt;/li&gt;

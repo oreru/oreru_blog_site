@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ReaScript on Oreru&#39;s Blog</title>
+    <link>https://oreru.github.io/oreru_blog_site/tags/reascript/</link>
+    <description>Recent content in ReaScript on Oreru&#39;s Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Fri, 27 Mar 2026 10:10:00 +0800</lastBuildDate><atom:link href="https://oreru.github.io/oreru_blog_site/tags/reascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SLS - ReaScript</title>
+      <link>https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/</link>
+      <pubDate>Fri, 27 Mar 2026 10:10:00 +0800</pubDate>
+      
+      <guid>https://oreru.github.io/oreru_blog_site/posts/sls_reascripts/</guid>
+      <description>&lt;p&gt;下载方式:&lt;/p&gt;
+&lt;p&gt;在reaper中的Extension-&amp;gt;Reapack-&amp;gt;Import repositories粘贴&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://raw.githubusercontent.com/oreru/SLS-Reascripts/refs/heads/master/index.xml&#34;&gt;https://raw.githubusercontent.com/oreru/SLS-Reascripts/refs/heads/master/index.xml&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;或直接在这个地址下载并在reaper中手动导入&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;https://github.com/oreru/SLS-Reascripts&#34;&gt;https://github.com/oreru/SLS-Reascripts&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;sls---item-reposition&#34;&gt;SLS - Item reposition&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;脚本依赖 ReaImGui 扩展，没有安装会提示并退出。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;这个脚本会按时间顺序重新分布所选 items，把每个 item（或分组）当作一个单位，重新计算目标时间点后整体平移。支持间隔设置、整体缩放、曲线分布、随机偏移，并可选择对齐网格，还能在移动 items 时同步移动对应轨道的自动化包络点。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Rygq/1202X564/Item_Position.gif&#34; alt=&#34;SLS item reposition demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt; ：在 REAPER 中先选中要重新排列的 items，然后运行脚本并在界面里调整 Interval、Scale、Curve、Random Offset 等参数，拖动参数时会实时预览结果。需要时勾选 Groups 以分组为单位、勾选 Automation 以移动包络、勾选 Snap offsets 以对齐网格，满意后点击 Apply 应用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;这个脚本依赖 ReaImGui 扩展，核心界面与交互使用 `reaper.ImGui_CreateContext`、`reaper.ImGui_Begin`、`reaper.ImGui_Text`、`reaper.ImGui_SliderDouble`、`reaper.ImGui_DragDouble`、`reaper.ImGui_Checkbox`、`reaper.ImGui_Button`、`reaper.ImGui_End`、`reaper.ImGui_DestroyContext` 与 `reaper.defer`。
+它对 item 的读取与移动主要使用 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetMediaItemInfo_Value`、`reaper.SetMediaItemPosition`、`reaper.GetMediaItemTrack`、`reaper.PreventUIRefresh`、`reaper.UpdateArrange`，并在需要时使用 `reaper.SnapToGrid` 对齐。
+如果启用自动化跟随，会调用包络相关 API，包括 `reaper.CountTrackEnvelopes`、`reaper.GetTrackEnvelope`、`reaper.CountEnvelopePointsEx`/`reaper.CountEnvelopePoints`、`reaper.GetEnvelopePointEx`/`reaper.GetEnvelopePoint`、`reaper.SetEnvelopePointEx`/`reaper.SetEnvelopePoint`、`reaper.InsertEnvelopePointEx`/`reaper.InsertEnvelopePoint`、`reaper.DeleteEnvelopePointRangeEx`/`reaper.DeleteEnvelopePointRange`、`reaper.Envelope_SortPointsEx`/`reaper.SortEnvelopePointsEx`/`reaper.Envelope_SortPoints`。
+撤销与错误处理使用 `reaper.Undo_BeginBlock`、`reaper.Undo_EndBlock`、`reaper.ShowMessageBox`。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;sls---switch-to-items-next-transient&#34;&gt;SLS - Switch to item&amp;rsquo;s next transient&lt;/h2&gt;
+&lt;p&gt;这个脚本会把当前选中的音频 item 切换到下一个瞬态区段，并自动调整 item 长度以匹配该区段。脚本会扫描源音频并缓存分段结果，下次运行会直接读取缓存，且能正确处理 take 的播放速率。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Sl7t/774X594/Switch_to_next_transient.gif&#34; alt=&#34;SLS switch to next transient demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：只选中一个音频 item 后运行脚本，它会跳到下一个检测到的声音区块并更新 start offset 与长度。需要改变检测灵敏度时，直接修改脚本开头的 threshold_db、min_silence_ms、min_segment_ms、analysis_hop_ms 以及 pre_roll_ms、post_roll_ms，再重新运行即可。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;该脚本的核心是读取音频源并检测瞬态区段，主要涉及 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetActiveTake`、`reaper.TakeIsMIDI`、`reaper.GetMediaItemTake_Source`、`reaper.GetMediaSourceLength`、`reaper.GetMediaSourceFileName`、`reaper.GetMediaSourceNumChannels`、`reaper.CreateTakeAudioAccessor`、`reaper.GetAudioAccessorSamples`、`reaper.DestroyAudioAccessor`。
+它对 item 与 take 的读写使用 `reaper.GetMediaItemInfo_Value`、`reaper.SetMediaItemInfo_Value`、`reaper.GetMediaItemTakeInfo_Value`、`reaper.SetMediaItemTakeInfo_Value`、`reaper.UpdateItemInProject`、`reaper.UpdateArrange`，并通过 `reaper.GetSetMediaItemInfo_String` 保存与读取缓存。
+撤销与提示相关 API 是 `reaper.Undo_BeginBlock`、`reaper.Undo_EndBlock`、`reaper.ShowMessageBox`。
+&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&#34;sls---select-regions-of-items-parent-track-in-matrix&#34;&gt;SLS - Select regions of items&amp;rsquo; parent track in matrix&lt;/h2&gt;
+&lt;p&gt;这个脚本会遍历所选 items，与项目中所有 regions 做时间重叠判断，把发生重叠的 regions 在 Region Render Matrix 中勾选到这些 items 所在轨道的“上一级父轨道”。&lt;/p&gt;
+&lt;img src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/VS3P/1192X618/Region_Select.gif/webp&#34; alt=&#34;SLS region select demo&#34; style=&#34;max-width: 720px; width: 90%; height: auto;&#34; /&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：在项目里先创建 regions，再选中一个或多个 items，运行脚本即可自动完成矩阵勾选。若选中多个 items，会把所有满足重叠条件的 regions 一并设置到对应的父轨道上。&lt;/p&gt;
+&lt;h2 id=&#34;sls---select-regions-of-items-top-track-in-matrix&#34;&gt;SLS - Select regions of items&amp;rsquo; top track in matrix&lt;/h2&gt;
+&lt;p&gt;这个脚本与上一个类似，但目标轨道改为“最顶层父轨道”，也就是一路向上查找到的最高级父轨道。它同样根据所选 items 的时间范围与 regions 的重叠关系来设置 Region Render Matrix。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;使用方法&lt;/strong&gt;：先准备好 regions，选中一个或多个 items 并运行脚本。脚本会把所有重叠 regions 设置到这些 items 对应的最顶层父轨道上，适合需要把结果汇总到顶层总线的场景。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;备注&lt;/strong&gt;&lt;/p&gt;
+&lt;pre tabindex=&#34;0&#34;&gt;&lt;code&gt;上述两个脚本主要依赖标记与 region 枚举，以及 Region Render Matrix 设置，核心 API 包括 `reaper.EnumProjectMarkers` 与 `reaper.SetRegionRenderMatrix`。
+它在 item 和轨道层面使用 `reaper.CountSelectedMediaItems`、`reaper.GetSelectedMediaItem`、`reaper.GetMediaItem_Track`、`reaper.GetParentTrack`、`reaper.GetMediaItemInfo_Value`。调试输出使用 `reaper.ShowConsoleMsg`。
+&lt;/code&gt;&lt;/pre&gt;</description>
+    </item>
+    
+  </channel>
+</rss>
