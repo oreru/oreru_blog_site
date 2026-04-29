@@ -16,7 +16,7 @@
       <description>&lt;p&gt;本文将以一个包含室内外场景、多种地面材质及水下环境的简单测试关卡为例，如实阐述如何使用Wwise和Unreal Engine来完成最基础但又不可或缺的声音资产整合工作，希望能把整个流程和思路梳理清楚。&lt;/p&gt;
 &lt;p&gt;项目地址 &lt;a href=&#34;https://github.com/oreru/SHU-GAD-ChenJunFeng&#34;&gt;https://github.com/oreru/SHU-GAD-ChenJunFeng&lt;/a&gt;&lt;/p&gt;
 &lt;video controls preload=&#34;metadata&#34; playsinline style=&#34;width: 100%; height: auto;&#34;&gt;
-  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260428/Rck0/GAD_%E6%BC%94%E7%A4%BA.mp4&#34; type=&#34;video/mp4&#34;&gt;
+  &lt;source src=&#34;https://img.51shazhu.com/autoupload/prW4dKUTGfugQp115SnncarqKxwR0n1kQhJ7sNM0ESs/20260429/MamT/output.mp4&#34; type=&#34;video/mp4&#34;&gt;
   Your browser does not support the video tag.
 &lt;/video&gt;
 &lt;h2 id=&#34;wwise中声音资产的层级结构&#34;&gt;Wwise中声音资产的层级结构&lt;/h2&gt;
